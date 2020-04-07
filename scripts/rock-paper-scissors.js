@@ -1,5 +1,7 @@
 const RPS_ARRAY = ['rock', 'paper', 'scissors'];
 
+let score = {wins: 0, losses: 0, ties: 0};
+
 function computerPlay(){
 	return RPS_ARRAY[random0to2()];
 }
@@ -11,11 +13,18 @@ function random0to2(){
 function playRound(playerSelection, computerSelection){
 	let playerSelectionIndex = RPS_ARRAY.indexOf(playerSelection);
 	let computerSelectionIndex = RPS_ARRAY.indexOf(computerSelection);
-	if(playerSelection === computerSelection) return 'Tie!'
+	if(playerSelection === computerSelection){
+		score["ties"]++;
+		return 'Tie!'
+	} 
 	else if(playerSelectionIndex === computerSelectionIndex + 1 % 3){
+		score["wins"]++;
 		return `You Win! ${capitalize(playerSelection)} beats ${computerSelection}.`;
 	}
-	else return `You Lose! ${capitalize(computerSelection)} beats ${playerSelection}.`;
+	else{
+		score["losses"]++;
+		return `You Lose! ${capitalize(computerSelection)} beats ${playerSelection}.`;
+	} 
 }
 
 function capitalize(string){
@@ -24,8 +33,9 @@ function capitalize(string){
 
 function game(){
 	for(let i = 0; i < 5; i++){
-		console.log(playRound(playerInput(), computerPlay()));
+		alert(playRound(playerInput(), computerPlay()));
 	}
+	alert(`Wins: ${score["wins"]}, Losses: ${score["losses"]}, Ties: ${score["ties"]}`);
 }
 
 function playerInput(){
