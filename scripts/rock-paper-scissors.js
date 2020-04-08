@@ -1,6 +1,7 @@
 const RPS_ARRAY = ['rock', 'paper', 'scissors'];
 
 let score = {wins: 0, losses: 0, ties: 0};
+let playCount = 0;
 
 let rockSelector = document.querySelector('#rock-selector');
 let paperSelector = document.querySelector('#paper-selector');
@@ -27,6 +28,7 @@ function play(selection){
 }
 
 function resolveGame(playerSelection, computerSelection){
+	playCount++;
 	let playAgain = confirm(playRound(playerSelection, computerSelection));
 	if(playAgain){
 		let containerList = document.querySelectorAll('#game-container > div');
@@ -35,6 +37,14 @@ function resolveGame(playerSelection, computerSelection){
 			gameContainer.appendChild(selectors[selector]);		
 			selectors[selector].hidden = false;
 		} 
+	}
+	if(playCount === 5){
+		let winnerMsg = (score['wins'] > score['losses']) ?
+						'You win!\n' :
+						'You lose!\n';
+		alert(winnerMsg + 
+			`Wins: ${score["wins"]}, Losses: ${score["losses"]}, Ties: ${score["ties"]}`);
+		playCount = 0;
 	}
 }
 
@@ -80,11 +90,4 @@ function playRound(playerSelection, computerSelection){
 
 function capitalize(string){
 	return string[0].toUpperCase()+string.substring(1);
-}
-
-function game(){
-	for(let i = 0; i < 5; i++){
-		alert(playRound(playerInput(), computerPlay()));
-	}
-	alert(`Wins: ${score["wins"]}, Losses: ${score["losses"]}, Ties: ${score["ties"]}`);
 }

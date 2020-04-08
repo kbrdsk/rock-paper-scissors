@@ -24,13 +24,15 @@ body {
 }
 
 #rock-selector {
-	background-position: 0px 0px;
+	background-position: 30px 0px;
+	background-repeat: no-repeat;
 }
 
 #paper-selector {
-	background-position: -333px 0px;
+	background-position: -325px 0px;
 }
 
 #scissors-selector {
-	background-position: -666px 0px;
+	background-position: -685px 0px;
+	background-repeat: no-repeat;
 }
