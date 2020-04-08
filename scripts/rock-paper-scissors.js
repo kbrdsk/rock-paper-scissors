@@ -39,7 +39,7 @@ function computerSelect(){
 	computerSelector.addEventListener('transitionend',
 					(e) => setTimeout(() => resolveGame(e.target), 300));
 	computerSelector.addEventListener('transitionend',
-					(e) => resetSelectors(e.target));
+					(e) => setTimeout(() => resetSelectors(e.target), 0));
 }
 
 function resolveGame(computerSelector){
