@@ -1,0 +1,36 @@
+body {
+	min-height: 100vh;
+	min-width: 100vw;
+	display: flex;
+	align-items: center;
+	justify-content: center;
+}
+
+@media (max-width: 1000px){
+	body {
+		min-width: 1000px;
+	}
+}
+
+#game-container {
+	display: grid;
+	width: 1000px;
+	height: 371px;
+	grid-template-columns: 1fr 1fr 1fr;
+}
+
+.selector {
+	background: url("../images/rock-paper-scissors.png");
+}
+
+#rock-selector {
+	background-position: 0px 0px;
+}
+
+#paper-selector {
+	background-position: -333px 0px;
+}
+
+#scissors-selector {
+	background-position: -666px 0px;
+}
