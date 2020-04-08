@@ -2,11 +2,14 @@ const RPS_ARRAY = ['rock', 'paper', 'scissors'];
 
 let score = {wins: 0, losses: 0, ties: 0};
 let playCount = 0;
+let computerSelection, computerSelector, playerSelection;
 
 let rockSelector = document.querySelector('#rock-selector');
 let paperSelector = document.querySelector('#paper-selector');
 let scissorsSelector = document.querySelector('#scissors-selector');
 let gameContainer = document.querySelector('#game-container');
+let blankDiv = document.createElement('div');
+blankDiv.style.width = "33%";
 
 let selectors = {
 		rock: rockSelector,
@@ -14,52 +17,71 @@ let selectors = {
 		scissors: scissorsSelector
 	}
 
-rockSelector.addEventListener('click', () => play('rock'));
-paperSelector.addEventListener('click', () => play('paper'));
-scissorsSelector.addEventListener('click', () => play('scissors'));
+computerSelect();
 
-
-function play(selection){
-	let computerSelection = computerPlay();
-	let computerSelector = selectors[computerSelection].cloneNode(true);
-	displaySelection(selection);
-	displayComputerSelection(computerSelector);
-	setTimeout(() => resolveGame(selection, computerSelection), 750);
+for(let selection in selectors){
+	selectors[selection].addEventListener('click', 
+						() => displaySelection(selection));
+	selectors[selection].addEventListener('transitionend', 
+						(e) => removeFaded(e.target));
+	selectors[selection].addEventListener('transitionend', 
+						(e) => displayComputerSelection(e));
 }
 
-function resolveGame(playerSelection, computerSelection){
+function removeFaded(selector){
+	if(selector.classList.contains("faded")) selector.style.width = "0px";
+}
+
+function computerSelect(){	
+	computerSelection = computerPlay();
+	computerSelector = selectors[computerSelection].cloneNode(true);
+	computerSelector.classList.add("faded");
+	computerSelector.addEventListener('transitionend',
+					() => setTimeout(() => resolveGame(), 300));
+}
+
+function resolveGame(){
 	playCount++;
 	let playAgain = confirm(playRound(playerSelection, computerSelection));
-	if(playAgain){
-		let containerList = document.querySelectorAll('#game-container > div');
-		for(let div of containerList) gameContainer.removeChild(div);
-		for(let selector in selectors){
-			gameContainer.appendChild(selectors[selector]);		
-			selectors[selector].hidden = false;
-		} 
-	}
-	if(playCount === 5){
-		let winnerMsg = (score['wins'] > score['losses']) ?
-						'You win!\n' :
-						'You lose!\n';
-		alert(winnerMsg + 
-			`Wins: ${score["wins"]}, Losses: ${score["losses"]}, Ties: ${score["ties"]}`);
-		playCount = 0;
-	}
+	if(playAgain) resetSelectors();
+	if(playCount === 5) alertWinner();
+}
+
+function alertWinner(){
+	let winnerMsg = (score['wins'] > score['losses']) ?
+					'You win!\n' :
+					'You lose!\n';
+	alert(winnerMsg + 
+		`Wins: ${score["wins"]}, Losses: ${score["losses"]}, Ties: ${score["ties"]}`);
+	playCount = 0;	
+}
+
+function resetSelectors(){
+	let containerList = document.querySelectorAll('#game-container > div');
+	for(let div of containerList) gameContainer.removeChild(div);
+	for(let selection in selectors){
+		let selector = selectors[selection];
+		selector.classList.remove("faded");
+		selector.style.width = "33%";
+		gameContainer.appendChild(selector);	
+	}	
+	computerSelect();
 }
 
 function displaySelection(selection){
+	playerSelection = selection;
 	for(let selector in selectors){
 		if(selector === selection) continue;
-		selectors[selector].hidden = true;
+		selectors[selector].classList.add("faded");
 	}
 }
 
-function displayComputerSelection(computerSelector){
-	let blankDiv = document.createElement('div');
+function displayComputerSelection(transitionend){
+	if(transitionend.propertyName !== "width") return;
+	if(gameContainer.contains(blankDiv)) return;
 	gameContainer.appendChild(blankDiv);
 	gameContainer.appendChild(computerSelector);
-
+	setTimeout(() => computerSelector.classList.remove("faded"), 0);//ensures fade-in transition happens
 }
 
 

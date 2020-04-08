@@ -13,14 +13,17 @@ body {
 }
 
 #game-container {
-	display: grid;
+	display: flex;
+	//justify-content: space-between;
 	width: 1000px;
 	height: 371px;
-	grid-template-columns: 1fr 1fr 1fr;
 }
 
 .selector {
 	background: url("../images/rock-paper-scissors.png");
+	transition: all 0.7s ease;
+	height: 100%;
+	width: 33%;
 }
 
 #rock-selector {
@@ -30,9 +33,14 @@ body {
 
 #paper-selector {
 	background-position: -325px 0px;
+	background-repeat: no-repeat;
 }
 
 #scissors-selector {
 	background-position: -685px 0px;
 	background-repeat: no-repeat;
+}
+
+.faded {
+	opacity: 0;
 }
