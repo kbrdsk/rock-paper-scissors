@@ -51,9 +51,9 @@ function resolveGame(computerSelector){
 }
 
 function alertWinner(){
-	let winnerMsg = (score['wins'] > score['losses']) ?
-					'You win!\n' :
-					'You lose!\n';
+	let winnerMsg = (score['wins'] >= score['losses']) ?
+					"You're winning!\n" :
+					"You're losing!\n";
 	alert(winnerMsg + 
 		`Wins: ${score["wins"]}, Losses: ${score["losses"]}, Ties: ${score["ties"]}`);
 	playCount = 0;	
