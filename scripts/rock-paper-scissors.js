@@ -37,13 +37,16 @@ function computerSelect(){
 	computerSelector = selectors[computerSelection].cloneNode(true);
 	computerSelector.classList.add("faded");
 	computerSelector.addEventListener('transitionend',
-					() => setTimeout(() => resolveGame(), 300));
+					(e) => setTimeout(() => resolveGame(e.target), 300));
+	computerSelector.addEventListener('transitionend',
+					(e) => resetSelectors(e.target));
 }
 
-function resolveGame(){
+function resolveGame(computerSelector){
+	if(computerSelector.classList.contains("faded")) return;
 	playCount++;
 	let playAgain = confirm(playRound(playerSelection, computerSelection));
-	if(playAgain) resetSelectors();
+	if(playAgain) fadeOut();
 	if(playCount === 5) alertWinner();
 }
 
@@ -56,15 +59,26 @@ function alertWinner(){
 	playCount = 0;	
 }
 
-function resetSelectors(){
+function fadeOut(){
+	let containerList = document.querySelectorAll('#game-container > div');
+	for(let div of containerList) div.classList.add("faded");
+}
+
+function resetSelectors(computerSelector){
+	if(!computerSelector.classList.contains("faded")) return;
 	let containerList = document.querySelectorAll('#game-container > div');
 	for(let div of containerList) gameContainer.removeChild(div);
 	for(let selection in selectors){
 		let selector = selectors[selection];
-		selector.classList.remove("faded");
+		selector.classList.add("faded");
 		selector.style.width = "33%";
 		gameContainer.appendChild(selector);	
-	}	
+	}
+	setTimeout(() => {	
+		for(let selection in selectors){
+			selectors[selection].classList.remove("faded");
+		}
+	}, 0);
 	computerSelect();
 }
 
